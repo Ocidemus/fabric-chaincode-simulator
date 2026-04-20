@@ -139,17 +139,31 @@ This project proves that the **portable layer is real and testable**:
 
 ---
 
-## Next steps (proposed for LFX mentorship)
+## Recommendations for the LFX PoC
 
-1. **Run the real chaincode against a local Fabric network** using
-   `fabric-samples/test-network` to validate the portable layer claim.
-2. **Set up a Fabric-X dev environment** and attempt to deploy the same
-   chaincode using the external launcher model.
-3. **Document the exact diff** between the two `main.go` bootstrap files.
-4. **Identify any stub methods** used by real-world chaincode
-   (CC-Tools, Fabric Private Chaincode) that go beyond `PutState/GetState`
-   — rich queries, private data, events — and analyse their Fabric-X status.
-5. **Produce a migration guide** covering each category of stub usage.
+Based on this analysis, the following areas are recommended for exploration
+during the mentorship:
+
+1. **Validate the portable layer against fabric-samples/test-network**
+   Run `asset-transfer-basic` against a live Fabric network to confirm
+   that chaincode depending only on PutState/GetState/DelState requires
+   zero modification for the FSC port.
+
+2. **Map the bootstrap diff explicitly**
+   Document the exact line-by-line difference between classic Fabric
+   `shim.Start()` and the Fabric-X external launcher gRPC server setup.
+   This is the clearest migration surface identified in this analysis.
+
+3. **Catalogue stub methods beyond the core four**
+   Real-world chaincode (CC-Tools, Fabric Private Chaincode) uses rich
+   queries, private data collections, and events. Each of these needs
+   a Fabric-X equivalent identified or a migration workaround documented.
+
+4. **Produce a category-based migration guide**
+   Group stub methods by migration effort: portable as-is, requires
+   bootstrap change only, requires architectural redesign. This would
+   serve as a practical reference for teams migrating existing Fabric
+   applications.
 
 ---
 
